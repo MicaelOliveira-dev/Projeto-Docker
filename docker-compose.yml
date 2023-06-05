@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: /home/micael/Área de Trabalho/Projeto_Docker
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    environment:
+      - MONGO_HOST=db
+      - MONGO_PORT=27017
+    command: uvicorn index:app --host 0.0.0.0 --port 8000
+    volumes:
+      - mongo-data:/data/db
+
+  db:
+    image: mongo
+    ports:
+      - 27018:27017
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
